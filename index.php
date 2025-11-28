@@ -35,7 +35,7 @@
 
 <!-- NAVBAR -->
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark px-3">
-    <a class="navbar-brand" href="#">
+    <a class="navbar-brand" href="index.php">
         <img src=pictures/logo-biblioTECH.png alt="Logo" height="40"> BiblioTECH
     </a>
 
@@ -45,8 +45,8 @@
 
     <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-            <li class="nav-item"><a class="nav-link" href="#">Nos Livres</a></li>
-            <li class="nav-item"><a class="nav-link" href="#">Espace Membre</a></li>
+            <li class="nav-item"><a class="nav-link" href="livres.php">Nos Livres</a></li>
+            <li class="nav-item"><a class="nav-link" href="membres.php">Espace Membre</a></li>
             <li class="nav-item"><a class="nav-link" href="#">Infos</a></li>
         </ul>
 
@@ -55,7 +55,7 @@
             <button class="btn btn-primary" type="submit">Recherche</button>
         </form>
 
-        <a href="#" class="btn btn-light fw-bold">Panier</a>
+        <a href="panier.php" class="btn btn-light fw-bold">Panier</a>
     </div>
 </nav>
 
@@ -102,10 +102,10 @@
         
 
 
-        <!-- IMAGE + LOGIN DROITE -->
+        <!-- IMAGE -->
         <div class="col-md-3">
             <img src=pictures/Château_de_Moulinsart.jpg class="img-fluid mb-3" alt="Image droite">
-
+        <!-- LOGIN DROITE -->
             <div class="login-box">
                 <h4 class="text-center">Se connecter</h4>
                 <label>Identifiant</label>
