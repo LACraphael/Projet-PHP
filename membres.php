@@ -1,5 +1,41 @@
 <?php
-// index.php
+session_start(); // Toujours en premier pour gérer la session
+
+try {
+    $pdo = new PDO("mysql:host=localhost;dbname=bibliotech;charset=utf8", "root", "");
+    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+} catch (PDOException $e) {
+    die("Erreur de connexion à la base de données : " . $e->getMessage());
+}
+
+$erreur = "";
+
+// Traitement connexion uniquement si le formulaire est soumis
+if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["mel"], $_POST["motdepasse"])) {
+    $mel = $_POST["mel"];
+    $motdepasse = $_POST["motdepasse"];
+
+    $stmt = $pdo->prepare("SELECT * FROM utilisateur WHERE mel = :mel AND motdepasse = :motdepasse");
+    $stmt->execute([
+        "mel" => $mel,
+        "motdepasse" => $motdepasse
+    ]);
+    $user = $stmt->fetch(PDO::FETCH_ASSOC);
+
+    if ($user) {
+        $_SESSION["user"] = $user; // Stocke toutes les infos de l'utilisateur
+
+        // Redirection selon le profil
+        if ($user["profil"] === "admin") {
+            header("Location: admin.php");
+        } else {
+            header("Location: espace_client.php");
+        }
+        exit; // Très important pour que le script s'arrête après la redirection
+    } else {
+        $erreur = "Identifiant ou mot de passe incorrect.";
+    }
+}
 ?>
 <!DOCTYPE html>
 <html lang="fr">
@@ -9,87 +45,50 @@
     <title>BiblioTECH</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
-        .actualité-bar {
-            background-color: #e0e0e0;
-            font-size: 1.8rem;
-            font-weight: bold;
-            padding: 10px;
-        }
-        .login-box {
-            background-color: #3a3a3a;
-            color: white;
-            padding: 20px;
-            border-radius: 5px;
-        }
-        .login-box input {
-            margin-bottom: 10px;
-        }
-        .book-img {
-            max-height: 350px;
-            object-fit: cover;
-            margin: auto;
-        }
-        .background {
-            background-image: url('pictures/background7.gif');
-            height: 100vh;
-            background-size: cover;
-            background-position: center;
-        }
+        .actualité-bar { background-color: #e0e0e0; font-size: 1.8rem; font-weight: bold; padding: 10px; }
+        .login-box { background-color: MediumSeaGreen; color: white; padding: 20px; border-radius: 5px; }
+        .login-box input { margin-bottom: 10px; }
+        .background { background-image: url('pictures/background7.gif'); height: 100vh; background-size: cover; background-position: center; }
     </style>
 </head>
 <body class="background">
-
-<!-- NAVBAR -->
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark px-3">
-    <a class="navbar-brand" href="index.php">
-        <img src=pictures/logo-biblioTECH.png alt="Logo" height="40"> BiblioTECH
-    </a>
-
+    <a class="navbar-brand" href="index.php"><img src=pictures/logo-biblioTECH.png alt="Logo" height="40"> BiblioTECH</a>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
         <span class="navbar-toggler-icon"></span>
     </button>
-
     <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
             <li class="nav-item"><a class="nav-link" href="livres.php">Nos Livres</a></li>
             <li class="nav-item"><a class="nav-link" href="membres.php">Espace Membre</a></li>
             <li class="nav-item"><a class="nav-link" href="#">Infos</a></li>
         </ul>
-
-        <form class="d-flex me-3" role="search">
-            <input class="form-control me-2" type="search" placeholder="Taper votre texte ici">
-            <button class="btn btn-primary" type="submit">Recherche</button>
-        </form>
-
-        <a href="panier.php" class="btn btn-light fw-bold">Panier</a>
     </div>
 </nav>
 
-<!-- BARRE D'ACTUALITÉ -->
-<div class="actualité-bar text-center">
-    Espace membre 🛡️ : Vous devez être membre pour pouvoir réserver des livres
-</div>
+<div class="actualité-bar text-center">Espace membre 🛡️ : Vous devez être membre pour pouvoir réserver des livres</div>
+
 <center>
-   <!-- LOGIN gauche -->
-        <div class="col-md-4" >
-            <img src=pictures/chatquilis.gif class="img-fluid mb-3" alt="Image gauche">
-            <div class="login-box" style="background-color:MediumSeaGreen;">
-                <h4 class="text-center">Se connecter</h4>
-                <label>Identifiant</label>
-                <input type="text" class="form-control" placeholder="Votre identifiant">
+    <div class="col-md-4 mt-5">
+        <div class="login-box">
+            <h4 class="text-center">Se connecter</h4>
+
+            <?php if($erreur): ?>
+                <div class="alert alert-danger"><?= $erreur ?></div>
+            <?php endif; ?>
+
+            <form method="POST" action="">
+                <label>Identifiant (email)</label>
+                <input type="email" name="mel" class="form-control" placeholder="Votre identifiant" required>
 
                 <label>Mot de passe</label>
-                <input type="password" class="form-control" placeholder="Votre mot de passe">
+                <input type="password" name="motdepasse" class="form-control" placeholder="Votre mot de passe" required>
 
-                <button class="btn btn-light w-100 mt-3">Connexion</button>
-            </div>
+                <button type="submit" class="btn btn-light w-100 mt-3">Connexion</button>
+            </form>
         </div>
-
     </div>
-    </center>
-
-       
-
+</center>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>

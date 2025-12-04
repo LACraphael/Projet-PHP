@@ -1,6 +1,19 @@
 <?php
 // index.php
+// chemin des covers : 
+
+$pdo = new PDO("mysql:host=localhost;dbname=bibliotech;charset=utf8", "root", "");
+
+$requete = $pdo->query("
+    SELECT photo AS image, titre 
+    FROM livre 
+    ORDER BY dateajout DESC 
+    LIMIT 3
+");
+
+$livres = $requete->fetchAll(PDO::FETCH_ASSOC);
 ?>
+
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -33,7 +46,7 @@
 </head>
 <body>
 
-<!-- NAVBAR -->
+<!-- BARRE DE RECHERCHE -->
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark px-3">
     <a class="navbar-brand" href="index.php">
         <img src=pictures/logo-biblioTECH.png alt="Logo" height="40"> BiblioTECH
@@ -74,34 +87,37 @@
         </div>
 
         <!-- CARROUSEL CENTRAL -->
-        <div div class="col-md-6 d-flex justify-content-center" style="max-height: 180px;">
-             <div class="carousel-container">
-            <div id="carouselLivres" class="carousel slide" data-bs-ride="carousel">
-                <div class="carousel-inner">
-                    <div class="carousel-item active">
-                        <img src=covers/1984.jpg class="d-block book-img" alt="Livre 1">
-                    </div>
-                    <div class="carousel-item">
-                        <img src=covers/hamlet.jpg class="d-block book-img" alt="Livre 2">
-                    </div>
-                    <div class="carousel-item">
-                        <img src=covers/macbeth.jpg class="d-block book-img" alt="Livre 3">
-                    </div>
-                </div>
-                <button class="carousel-control-prev" type="button" data-bs-target="#carouselLivres" data-bs-slide="prev">
-                    <span class="carousel-control-prev-icon"></span>
-                </button>
-                <button class="carousel-control-next" type="button" data-bs-target="#carouselLivres" data-bs-slide="next">
-                    <span class="carousel-control-next-icon"></span>
-                </button>
+<div class="col-md-6 d-flex justify-content-center" style="max-height: 180px;">
+    <div class="carousel-container">
+        <div id="carouselLivres" class="carousel slide" data-bs-ride="carousel">
+            <div class="carousel-inner">
+
+                <?php
+                $active = "active";
+                foreach ($livres as $livre) {
+                    echo '
+                    <div class="carousel-item ' . $active . '">
+                        <img src="covers/' . $livre["image"] . '" class="d-block book-img" alt="' . $livre["titre"] . '">
+                    </div>';
+                    $active = "";
+                }
+                ?>
+
             </div>
-            <h3 class="mt-3">▲ Dernière arrivées ▲</h3>
-            <p>Disponible dès maintenant en librairie</p>
+
+            <button class="carousel-control-prev" type="button" data-bs-target="#carouselLivres" data-bs-slide="prev">
+                <span class="carousel-control-prev-icon"></span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#carouselLivres" data-bs-slide="next">
+                <span class="carousel-control-next-icon"></span>
+            </button>
         </div>
-        </div>
+
+        <h3 class="mt-3">▲ Dernière arrivées ▲</h3>
+        <p>Disponible dès maintenant en librairie</p>
+    </div>
+</div>
         
-
-
         <!-- IMAGE -->
         <div class="col-md-3">
             <img src=pictures/Château_de_Moulinsart.jpg class="img-fluid mb-3" alt="Image droite">
