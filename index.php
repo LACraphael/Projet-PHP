@@ -1,4 +1,11 @@
 <?php
+
+    include 'entete.html';
+
+?>
+
+
+<?php
 // index.php
 // chemin des covers : 
 
@@ -21,7 +28,8 @@ $livres = $requete->fetchAll(PDO::FETCH_ASSOC);
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>BiblioTECH</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-    <style>
+    <link rel="stylesheet" type="text/css" href="style.css"/>
+    <!-- <style>
         .actualité-bar {
             background-color: #e0e0e0;
             font-size: 1.8rem;
@@ -42,38 +50,12 @@ $livres = $requete->fetchAll(PDO::FETCH_ASSOC);
             object-fit: cover;
             margin: auto;
         }
-    </style>
+    </style> -->
 </head>
 <body>
 
-<!-- BARRE DE RECHERCHE -->
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark px-3">
-    <a class="navbar-brand" href="index.php">
-        <img src=pictures/logo-biblioTECH.png alt="Logo" height="40"> BiblioTECH
-    </a>
-
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-        <span class="navbar-toggler-icon"></span>
-    </button>
-
-    <div class="collapse navbar-collapse" id="navbarNav">
-        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-            <li class="nav-item"><a class="nav-link" href="livres.php">Nos Livres</a></li>
-            <li class="nav-item"><a class="nav-link" href="membres.php">Espace Membre</a></li>
-            <li class="nav-item"><a class="nav-link" href="#">Infos</a></li>
-        </ul>
-
-        <form class="d-flex me-3" role="search">
-            <input class="form-control me-2" type="search" placeholder="Taper votre texte ici">
-            <button class="btn btn-primary" type="submit">Recherche</button>
-        </form>
-
-        <a href="panier.php" class="btn btn-light fw-bold">Panier</a>
-    </div>
-</nav>
-
 <!-- BARRE D'ACTUALITÉ -->
-<div class="actualité-bar text-center">
+<div class="actualite-bar text-center">
     Actualité 📰 : La bibliothèque sera fermer jusque au 18 décembre
 </div>
 
@@ -113,7 +95,7 @@ $livres = $requete->fetchAll(PDO::FETCH_ASSOC);
             </button>
         </div>
 
-        <h3 class="mt-3">▲ Dernière arrivées ▲</h3>
+        <h3 class="container">▲ Dernière arrivées ▲</h3>
         <p>Disponible dès maintenant en librairie</p>
     </div>
 </div>

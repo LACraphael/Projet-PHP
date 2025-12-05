@@ -1,0 +1,23 @@
+ .actualite-bar {
+            background-color: #e0e0e0;
+            font-size: 1.8rem;
+            font-weight: bold;
+            padding: 10px;
+        }
+
+.login-box {
+            background-color: #3a3a3a;
+            color: white;
+            padding: 20px;
+            border-radius: 5px;
+        }
+
+.login-box input {
+            margin-bottom: 10px;
+        }
+
+.book-img {
+            height: 500px;
+            object-fit: cover;
+            margin: auto;
+        }

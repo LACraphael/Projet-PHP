@@ -1,9 +1,30 @@
 <?php
+
+    include 'entete.html';
+
+?>
+
+<?php
 // Connexion BDD
 $pdo = new PDO("mysql:host=localhost;dbname=bibliotech;charset=utf8", "root", "");
 
 // Si une recherche est envoyée
 $search = isset($_GET["search"]) ? trim($_GET["search"]) : "";
+
+$search = isset($_GET['q']) ? trim($_GET['q']) : "";
+
+if ($search != "") {
+    $stmt = $pdo->prepare("
+        SELECT * FROM livre 
+        WHERE titre LIKE :search 
+        OR detail LIKE :search
+    ");
+    $stmt->execute(["search" => "%".$search."%"]);
+} else {
+    $stmt = $pdo->query("SELECT * FROM livre ORDER BY titre");
+}
+
+$livres = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 // Requête SQL
 if ($search !== "") {
@@ -23,7 +44,6 @@ if ($search !== "") {
 
 $livres = $req->fetchAll(PDO::FETCH_ASSOC);
 ?>
-<!DOCTYPE html>
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
@@ -40,31 +60,6 @@ $livres = $req->fetchAll(PDO::FETCH_ASSOC);
 </head>
 <body class="bg-light">
 
-<!-- NAVBAR -->
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark px-3">
-    <a class="navbar-brand" href="index.php">
-        <img src=pictures/logo-biblioTECH.png alt="Logo" height="40"> BiblioTECH
-    </a>
-
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-        <span class="navbar-toggler-icon"></span>
-    </button>
-
-    <div class="collapse navbar-collapse" id="navbarNav">
-        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-            <li class="nav-item"><a class="nav-link" href="livres.php">Nos Livres</a></li>
-            <li class="nav-item"><a class="nav-link" href="membres.php">Espace Membre</a></li>
-            <li class="nav-item"><a class="nav-link" href="#">Infos</a></li>
-        </ul>
-
-        <form class="d-flex me-3" role="search">
-            <input class="form-control me-2" type="search" placeholder="Taper votre texte ici">
-            <button class="btn btn-primary" type="submit">Recherche</button>
-        </form>
-
-        <a href="panier.php" class="btn btn-light fw-bold">Panier</a>
-    </div>
-</nav>
 
 <div class="container">
 <div class="actualité-bar text-center">
@@ -72,11 +67,12 @@ $livres = $req->fetchAll(PDO::FETCH_ASSOC);
 </div>
 
     <!-- BARRE DE RECHERCHE -->
-    <form method="GET" class="input-group mb-4">
-        <input type="text" name="search" value="<?= htmlspecialchars($search) ?>" 
-               placeholder="Tapez un nom d'auteur…" class="form-control">
-        <button class="btn btn-primary" type="submit">Rechercher</button>
-    </form>
+    <form method="GET" class="mb-4">
+    <input type="text" name="q" class="form-control"
+           placeholder="Rechercher un livre..."
+           value="<?= isset($_GET['q']) ? htmlspecialchars($_GET['q']) : '' ?>">
+</form>
+
 
     <!-- RÉSULTATS -->
     <div class="row">

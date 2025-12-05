@@ -1,0 +1,17 @@
+ .actualite-bar {
+            background-color: #e0e0e0;
+            font-size: 1.8rem;
+            font-weight: bold;
+            padding: 10px;
+        }
+.book-img {
+            height: 500px;
+            object-fit: cover;
+            margin: auto;
+        }
+
+.login-box { background-color: MediumSeaGreen; color: white; padding: 20px; border-radius: 5px; }
+
+.login-box input { margin-bottom: 10px; }
+
+.background { background-image: url('pictures/merlin.gif'); height: 100vh; background-size: cover; background-position: center; }

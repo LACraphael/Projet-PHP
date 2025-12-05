@@ -1,4 +1,11 @@
 <?php
+
+    include 'entete.html';
+
+?>
+
+
+<?php
 session_start(); // Toujours en premier pour gérer la session
 
 try {
@@ -37,36 +44,16 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["mel"], $_POST["motdep
     }
 }
 ?>
-<!DOCTYPE html>
-<html lang="fr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>BiblioTECH</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-    <style>
-        .actualité-bar { background-color: #e0e0e0; font-size: 1.8rem; font-weight: bold; padding: 10px; }
-        .login-box { background-color: MediumSeaGreen; color: white; padding: 20px; border-radius: 5px; }
-        .login-box input { margin-bottom: 10px; }
-        .background { background-image: url('pictures/background7.gif'); height: 100vh; background-size: cover; background-position: center; }
-    </style>
+    <link rel="stylesheet" type="text/css" href="stylemembers.css"/>
 </head>
 <body class="background">
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark px-3">
-    <a class="navbar-brand" href="index.php"><img src=pictures/logo-biblioTECH.png alt="Logo" height="40"> BiblioTECH</a>
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-        <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="navbarNav">
-        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-            <li class="nav-item"><a class="nav-link" href="livres.php">Nos Livres</a></li>
-            <li class="nav-item"><a class="nav-link" href="membres.php">Espace Membre</a></li>
-            <li class="nav-item"><a class="nav-link" href="#">Infos</a></li>
-        </ul>
-    </div>
-</nav>
 
-<div class="actualité-bar text-center">Espace membre 🛡️ : Vous devez être membre pour pouvoir réserver des livres</div>
+<div class="actualite-bar text-center">Espace membre 🛡️ : Vous devez être membre pour pouvoir réserver des livres</div>
 
 <center>
     <div class="col-md-4 mt-5">
