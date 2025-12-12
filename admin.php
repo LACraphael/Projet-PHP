@@ -1,11 +1,10 @@
 <?php
 
-    include 'entete.html';
+    include 'entete.php';
 
 ?>
 
 <?php
-session_start();
 
 // Vérifie si l'utilisateur est connecté et est admin
 if (!isset($_SESSION["user"]) || $_SESSION["user"]["profil"] !== "admin") {

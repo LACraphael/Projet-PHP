@@ -1,11 +1,10 @@
 <?php
 
-    include 'entete.html';
+    include 'entete.php';
 
 ?>
 
 <?php
-session_start();
 if (!isset($_SESSION["user"]) || $_SESSION["user"]["profil"] !== "client") {
     header("Location: membres.php");
     exit;

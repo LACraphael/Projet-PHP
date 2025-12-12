@@ -1,12 +1,12 @@
 <?php
 
-    include 'entete.html';
+    include 'entete.php';
 
 ?>
 
 
 <?php
-session_start(); // Toujours en premier pour gérer la session
+
 
 try {
     $pdo = new PDO("mysql:host=localhost;dbname=bibliotech;charset=utf8", "root", "");
@@ -55,8 +55,8 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["mel"], $_POST["motdep
 
 <div class="actualite-bar text-center">Espace membre 🛡️ : Vous devez être membre pour pouvoir réserver des livres</div>
 
-<center>
-    <div class="col-md-4 mt-5">
+<!-- ANCIEN CENTER -->
+    <div class="col-md-4 mt-5"  class="centrer"   >
         <div class="login-box">
             <h4 class="text-center">Se connecter</h4>
 
@@ -75,7 +75,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["mel"], $_POST["motdep
             </form>
         </div>
     </div>
-</center>
+
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>

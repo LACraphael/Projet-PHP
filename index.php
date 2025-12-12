@@ -1,6 +1,6 @@
 <?php
 
-    include 'entete.html';
+    include 'entete.php';
 
 ?>
 
@@ -29,28 +29,6 @@ $livres = $requete->fetchAll(PDO::FETCH_ASSOC);
     <title>BiblioTECH</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="style.css"/>
-    <!-- <style>
-        .actualité-bar {
-            background-color: #e0e0e0;
-            font-size: 1.8rem;
-            font-weight: bold;
-            padding: 10px;
-        }
-        .login-box {
-            background-color: #3a3a3a;
-            color: white;
-            padding: 20px;
-            border-radius: 5px;
-        }
-        .login-box input {
-            margin-bottom: 10px;
-        }
-        .book-img {
-            max-height: 350px;
-            object-fit: cover;
-            margin: auto;
-        }
-    </style> -->
 </head>
 <body>
 

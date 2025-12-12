@@ -1,3 +1,6 @@
+<?php
+session_start();
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -9,7 +12,6 @@
 
 <body>
 
-<!-- BARRE DE RECHERCHE -->
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark px-3">
     <a class="navbar-brand" href="index.php">
         <img src="pictures/logo-biblioTECH.png" alt="Logo" height="40"> BiblioTECH
@@ -24,8 +26,12 @@
             <li class="nav-item"><a class="nav-link" href="livres.php">Nos Livres</a></li>
             <li class="nav-item"><a class="nav-link" href="membres.php">Espace Membre</a></li>
             <li class="nav-item"><a class="nav-link" href="#">Infos</a></li>
-            <img src="pictures/CONNECTpng.png" alt="Logo" height="40">
-            <img src="pictures/DISCONNECTpng.png" alt="Logo" height="40">
+
+            <?php if (isset($_SESSION["user"])): ?>
+                <img src="pictures/CONNECTpng.png" alt="Connecté" height="40">
+            <?php else: ?>
+                <img src="pictures/DISCONNECTpng.png" alt="Déconnecté" height="40">
+            <?php endif; ?>
         </ul>
 
         <form class="d-flex me-3" role="search" action="livres.php" method="GET">
@@ -34,22 +40,9 @@
         </form>
 
         <a href="panier.php" class="btn btn-light fw-bold">Panier</a>
+
+        <?php if (isset($_SESSION["user"])): ?>
+            <a href="logout.php" class="btn btn-danger ms-3">Déconnexion</a>
+        <?php endif; ?>
     </div>
 </nav>
-
-<!-- OK LETS GO -->
-<audio id="click-sound" src="pictures/LetsGO.mp3"></audio>
-
-<script>
-document.addEventListener("click", function () {
-    const audio = document.getElementById("click-sound");
-
-    audio.currentTime = 0;
-    audio.play().catch(err => {
-        console.log("Lecture audio bloquée par le navigateur :", err);
-    });
-});
-</script>
-
-</body>
-</html>
