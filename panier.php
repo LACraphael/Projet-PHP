@@ -23,6 +23,22 @@ if (isset($_POST['valider'])) {
     }
 
     foreach ($panier as $idLivre => $v) {
+    // Vérifier si l'utilisateur a déjà emprunté ce livre aujourd'hui
+    $check = $pdo->prepare("
+        SELECT COUNT(*) FROM emprunter
+        WHERE mel = ?
+        AND nolivre = ?
+        AND dateemprunt = CURDATE()
+    ");
+    $check->execute([
+        $_SESSION['user']['mel'],
+        $idLivre
+    ]);
+
+    if ($check->fetchColumn() > 0) {
+        $message = "❌ Vous ne pouvez pas emprunter le même livre deux fois le même jour.";
+        continue; // passe au livre suivant
+    }
 
         // Enregistrer l’emprunt
         $stmt = $pdo->prepare("
@@ -62,10 +78,11 @@ if (!empty($panier)) {
     <meta charset="UTF-8">
     <title>BiblioTECH – Panier</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="stylemembers.css"/>
 </head>
 <body>
 
-<div class="actualité-bar text-center">
+<div class="actualite-bar text-center">
     Bienvenue dans votre panier 🛒 (max 5 livres)
 </div>
 
