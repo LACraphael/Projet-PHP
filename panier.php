@@ -1,51 +1,113 @@
 <?php
+include 'entete.php';
 
-    include 'entete.php';
+$pdo = new PDO("mysql:host=localhost;dbname=bibliotech;charset=utf8", "root", "");
 
+// Initialisation panier
+$panier = $_SESSION['panier'] ?? [];
+
+// Suppression d’un livre
+if (isset($_GET['remove'])) {
+    unset($_SESSION['panier'][$_GET['remove']]);
+    header("Location: panier.php");
+    exit;
+}
+
+// Validation du panier
+if (isset($_POST['valider'])) {
+
+    if (!isset($_SESSION['user'])) {
+        $_SESSION['redirect_after_login'] = 'panier.php';
+        header("Location: membres.php");
+        exit;
+    }
+
+    foreach ($panier as $idLivre => $v) {
+
+        // Enregistrer l’emprunt
+        $stmt = $pdo->prepare("
+            INSERT INTO emprunter (mel, nolivre, dateemprunt)
+            VALUES (?, ?, CURDATE())
+        ");
+        $stmt->execute([
+            $_SESSION['user']['mel'],
+            $idLivre
+        ]);
+
+        // Marquer le livre indisponible
+        $pdo->prepare("
+            UPDATE livre SET disponible = 0
+            WHERE nolivre = ?
+        ")->execute([$idLivre]);
+    }
+
+    unset($_SESSION['panier']);
+    $panier = [];
+    $message = "Emprunt validé avec succès 🎉";
+}
+
+// Récupération des livres du panier
+$livres = [];
+if (!empty($panier)) {
+    $ids = implode(',', array_keys($panier));
+    $livres = $pdo->query("
+        SELECT * FROM livre WHERE nolivre IN ($ids)
+    ")->fetchAll(PDO::FETCH_ASSOC);
+}
 ?>
 
 <!DOCTYPE html>
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>BiblioTECH</title>
+    <title>BiblioTECH – Panier</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-    <style>
-        .actualité-bar {
-            background-color: #e0e0e0;
-            font-size: 1.8rem;
-            font-weight: bold;
-            padding: 10px;
-        }
-        .login-box {
-            background-color: #3a3a3a;
-            color: white;
-            padding: 20px;
-            border-radius: 5px;
-        }
-        .login-box input {
-            margin-bottom: 10px;
-        }
-        .book-img {
-            max-height: 350px;
-            object-fit: cover;
-            margin: auto;
-        }
-    </style>
 </head>
 <body>
 
-<!-- BARRE D'ACTUALITÉ -->
 <div class="actualité-bar text-center">
-     Bienvennue dans votre panier 🛒 : Pas plus de 5 emprunt simultané
+    Bienvenue dans votre panier 🛒 (max 5 livres)
 </div>
 
+<div class="container mt-4">
+    <h2>📚 Mon panier</h2>
 
+    <?php if (isset($message)): ?>
+        <div class="alert alert-success"><?= $message ?></div>
+    <?php endif; ?>
 
-    </div>
+    <?php if (empty($livres)): ?>
+        <p class="text-muted">Votre panier est vide.</p>
+    <?php else: ?>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Titre</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php foreach ($livres as $livre): ?>
+                    <tr>
+                        <td><?= htmlspecialchars($livre['titre']) ?></td>
+                        <td>
+                            <a href="panier.php?remove=<?= $livre['nolivre'] ?>"
+                               class="btn btn-danger btn-sm">
+                                Retirer
+                            </a>
+                        </td>
+                    </tr>
+                <?php endforeach; ?>
+            </tbody>
+        </table>
+
+        <form method="post">
+            <button name="valider" class="btn btn-success">
+                Valider l’emprunt
+            </button>
+        </form>
+    <?php endif; ?>
 </div>
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

@@ -122,10 +122,22 @@ $livres = $req->fetchAll(PDO::FETCH_ASSOC);
                             </div>
 
                             <div class="modal-footer">
-                                <a href="emprunter.php?id=<?= $livre['nolivre'] ?>"
-                                   class="btn btn-success">Emprunter</a>
-                                <button class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
-                            </div>
+            <?php if ($livre['disponible'] == 1): ?>
+                <a href="emprunter.php?id=<?= $livre['nolivre'] ?>"
+                class="btn btn-success">
+                    Emprunter
+            </a>
+            <?php else: ?>
+            <button class="btn btn-secondary" disabled>
+                Indisponible
+                </button>
+        <?php endif; ?>
+
+    <button class="btn btn-secondary" data-bs-dismiss="modal">
+        Fermer
+    </button>
+</div>
+
 
                         </div>
                     </div>
