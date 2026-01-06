@@ -82,15 +82,39 @@ $livres = $requete->fetchAll(PDO::FETCH_ASSOC);
         <div class="col-md-3">
             <img src=pictures/Château_de_Moulinsart.jpg class="img-fluid mb-3" alt="Image droite">
         <!-- LOGIN DROITE -->
-            <div class="login-box">
+                <?php if (!isset($_SESSION["user"])): ?>
+
+<div class="login-box">
                 <h4 class="text-center">Se connecter</h4>
-                <label>Identifiant</label>
-                <input type="text" class="form-control" placeholder="Votre identifiant">
 
-                <label>Mot de passe</label>
-                <input type="password" class="form-control" placeholder="Votre mot de passe">
+                <form method="POST" action="login.php">
+                    <input type="hidden" name="from_index" value="1">
 
-                <button class="btn btn-light w-100 mt-3">Connexion</button>
+                    <label>Email</label>
+                    <input type="email" name="mel" class="form-control" required>
+
+                    <label>Mot de passe</label>
+                    <input type="password" name="motdepasse" class="form-control" required>
+
+                    <button class="btn btn-light w-100 mt-3">Connexion</button>
+                </form>
+            </div>
+
+            <?php else: ?>
+
+            <div class="login-box">
+                <h5>👋 Bonjour <?= htmlspecialchars($_SESSION["user"]["prenom"]) ?></h5>
+                <ul class="list-unstyled">
+                    <li><strong>Nom :</strong> <?= $_SESSION["user"]["nom"] ?></li>
+                    <li><strong>Email :</strong> <?= $_SESSION["user"]["mel"] ?></li>
+                    <li><strong>Adresse :</strong> <?= $_SESSION["user"]["adresse"] ?></li>
+                </ul>
+
+                <a href="membres.php" class="btn btn-success w-100">Mon espace</a>
+            </div>
+
+            <?php endif; ?>
+
             </div>
         </div>
 

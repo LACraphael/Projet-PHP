@@ -1,12 +1,14 @@
 <?php
+include 'entete.php';
 
-    include 'entete.php';
-
-?>
-
-
-<?php
-
+if (isset($_SESSION["user"])) {
+    if ($_SESSION["user"]["profil"] === "admin") {
+        header("Location: admin.php");
+    } else {
+        header("Location: espace_client.php");
+    }
+    exit;
+}
 
 try {
     $pdo = new PDO("mysql:host=localhost;dbname=bibliotech;charset=utf8", "root", "");
