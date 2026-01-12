@@ -19,7 +19,7 @@ try {
 
 $erreur = "";
 
-// Traitement connexion uniquement si le formulaire est soumis
+
 if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["mel"], $_POST["motdepasse"])) {
     $mel = $_POST["mel"];
     $motdepasse = $_POST["motdepasse"];
@@ -32,7 +32,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["mel"], $_POST["motdep
     $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
     if ($user) {
-        $_SESSION["user"] = $user; // Stocke toutes les infos de l'utilisateur
+        $_SESSION["user"] = $user; //
 
         // Redirection selon le profil
         if ($user["profil"] === "admin") {
@@ -40,7 +40,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["mel"], $_POST["motdep
         } else {
             header("Location: espace_client.php");
         }
-        exit; // Très important pour que le script s'arrête après la redirection
+        exit; 
     } else {
         $erreur = "Identifiant ou mot de passe incorrect.";
     }

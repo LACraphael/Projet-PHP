@@ -8,7 +8,7 @@
 // Connexion BDD
 $pdo = new PDO("mysql:host=localhost;dbname=bibliotech;charset=utf8", "root", "");
 
-// Si une recherche est envoyée
+// 
 $search = isset($_GET["search"]) ? trim($_GET["search"]) : "";
 
 $search = isset($_GET['q']) ? trim($_GET['q']) : "";
@@ -26,7 +26,7 @@ if ($search != "") {
 
 $livres = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-// Requête SQL
+//
 if ($search !== "") {
     $sql = "SELECT livre.*, auteur.nom, auteur.prenom 
             FROM livre 
@@ -35,7 +35,7 @@ if ($search !== "") {
     $req = $pdo->prepare($sql);
     $req->execute(["recherche" => "%$search%"]);
 } else {
-    // Par défaut : afficher tous les livres
+    //
     $sql = "SELECT livre.*, auteur.nom, auteur.prenom 
             FROM livre 
             INNER JOIN auteur ON livre.noauteur = auteur.noauteur";
