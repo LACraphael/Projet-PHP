@@ -7,7 +7,7 @@ if (!isset($_SESSION["user"]) || $_SESSION["user"]["profil"] !== "admin") {
 
 $pdo = new PDO("mysql:host=localhost;dbname=bibliotech;charset=utf8", "root", "");
 
-// Récupérer la liste des auteurs pour le select
+// 
 $auteurs = $pdo->query("SELECT noauteur, CONCAT(prenom,' ',nom) AS nom_complet FROM auteur ORDER BY nom")->fetchAll(PDO::FETCH_ASSOC);
 
 // Traitement du formulaire

@@ -34,7 +34,7 @@ $livres = $requete->fetchAll(PDO::FETCH_ASSOC);
 
 <!-- BARRE D'ACTUALITÉ -->
 <div class="actualite-bar text-center">
-    Actualité 📰 : La bibliothèque sera fermer jusque au 18 décembre
+    Actualité 📰 : La bibliothèque sera fermé jusqu'au 18 décembre
 </div>
 
 <!-- CONTENU PRINCIPAL -->
